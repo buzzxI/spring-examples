@@ -1,0 +1,10 @@
+spring:
+  data:
+    redis:
+      port: 6380
+      host: localhost
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:5424/buzz_db?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true
+    username: root
+    password: buzz

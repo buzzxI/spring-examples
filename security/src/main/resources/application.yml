@@ -1,0 +1,20 @@
+server:
+  port: 8081
+
+jwt:
+  # god-damn it, spring does not support EL in yml file
+  expire-time: 7200 # 60 * 60 * 2
+  rsa-config:
+    private-key: classpath:cert/private_key.pem
+    public-key: classpath:cert/public_key.pem
+spring:
+  data:
+    redis:
+      port: 6380
+      host: localhost
+      default-expire: 86400 # 60 * 60 * 24, copilot does not work
+  datasource:
+    username: root
+    password: buzz
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:5424/security_db?useSSL=false&serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&allowPublicKeyRetrieval=true
