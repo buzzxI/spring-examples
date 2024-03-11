@@ -13,4 +13,9 @@ public class SecurityConstant {
 
     public static final String ERROR_RESOURCE = "/error/**";
 
+    public static final String ADMIN_RESOURCE = "/admin/**";
+
+    public static final String USER_RESOURCE = "/user/**";
+
+    public static final String PUBLIC_RESOURCE = "/public/**";
 }

@@ -8,11 +8,13 @@ import icu.buzz.security.exception.UserNotAvailableException;
 import icu.buzz.security.exception.UsernameAlreadyExistException;
 import icu.buzz.security.service.AuthService;
 import icu.buzz.security.service.JwtService;
+import icu.buzz.security.util.ContextUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Map;
@@ -22,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
-
+    private final ContextUtil contextUtil;
     private UserDetailsServiceImpl userDetailsService;
 
     private PasswordEncoder passwordEncoder;
@@ -37,9 +39,10 @@ public class AuthServiceImpl implements AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtService jwtService) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, JwtService jwtService, ContextUtil contextUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.contextUtil = contextUtil;
     }
 
     @Override
@@ -69,6 +72,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public void logout() {
-
+        UserDetails currentUser = contextUtil.getCurrentUser();
+        userDetailsService.unloadUserByUsername(currentUser.getUsername());
     }
 }

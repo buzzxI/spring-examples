@@ -2,9 +2,11 @@ package icu.buzz.security.entities;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.List;
 
 @Data
 public class JwtUser implements UserDetails {
@@ -12,7 +14,7 @@ public class JwtUser implements UserDetails {
     private String uid;
     private String username;
     private String password;
-    private Collection<? extends GrantedAuthority> authorities;
+    private Role role;
     private boolean enable;
 
     public JwtUser() {
@@ -22,13 +24,15 @@ public class JwtUser implements UserDetails {
         this.uid = user.getUid();
         this.username = user.getUsername();
         this.password = user.getPassword();
-        this.authorities = user.getRole().getAuthority();
+        this.role = user.getRole();
         this.enable = user.getEnabled();
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.authorities;
+        List<GrantedAuthority> authority = role.getAuthority();
+        authority.add((GrantedAuthority) () -> "ROLE_" + role.name());
+        return authority;
     }
 
     @Override

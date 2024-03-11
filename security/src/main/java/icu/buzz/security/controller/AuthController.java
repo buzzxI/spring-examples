@@ -30,6 +30,11 @@ public class AuthController {
         return new ResponseEntity<>(httpHeaders, HttpStatus.OK);
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        authService.logout();
+        return ResponseEntity.ok().build();
+    }
 
     /**
      * when user sign up, an email is needed, but for now, just use LoginRequest to simulate the sign-up process

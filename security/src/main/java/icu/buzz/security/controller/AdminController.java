@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/public")
-public class HelloController {
+@RequestMapping("/admin")
+public class AdminController {
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello, this is a public page!";
+    @GetMapping("/resource")
+    public String adminResource() {
+        return "Hello, this is an admin page!";
     }
 }

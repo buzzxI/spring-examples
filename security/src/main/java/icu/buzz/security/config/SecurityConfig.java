@@ -1,6 +1,7 @@
 package icu.buzz.security.config;
 
 import icu.buzz.security.constant.SecurityConstant;
+import icu.buzz.security.entities.Role;
 import icu.buzz.security.filter.JwtAuthenticationFilter;
 import icu.buzz.security.handler.CustomAccessDeniedHandler;
 import icu.buzz.security.handler.CustomAuthenticationEntryPoint;
@@ -48,7 +49,14 @@ public class SecurityConfig {
 				.authorizeHttpRequests((authorize) -> authorize
 						// permit request to `login` and `sign up`
 						.requestMatchers(HttpMethod.POST, SecurityConstant.SYSTEM_WHITELIST).permitAll()
+						// permit request to `error` controller (compromise)
 						.requestMatchers(SecurityConstant.ERROR_RESOURCE).permitAll()
+						// only users with admin can access `/admin/**`
+						.requestMatchers(SecurityConstant.ADMIN_RESOURCE).hasRole(Role.ADMIN.name())
+						// all users signing up can access `/user/**`
+						.requestMatchers(SecurityConstant.USER_RESOURCE).hasAnyRole(Role.USER.name(), Role.ADMIN.name())
+						// anonymous users can access `/public/**`
+						.requestMatchers(SecurityConstant.PUBLIC_RESOURCE).permitAll()
 						.anyRequest().authenticated())
 				// in a jwt based system, csrf protection is not needed -> (two stage token is recommended -> refresh token and in-memory jwt token)
 				.csrf(AbstractHttpConfigurer::disable)

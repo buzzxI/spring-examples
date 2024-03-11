@@ -5,11 +5,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/public")
-public class HelloController {
+@RequestMapping("/user")
+public class UserController {
 
-    @GetMapping("/hello")
-    public String hello() {
-        return "Hello, this is a public page!";
+    @GetMapping("/resource")
+    public String userResource() {
+        return "Hello, this is a user page!";
     }
 }

@@ -66,4 +66,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         userMapper.insert(user);
         return user;
     }
+
+    /**
+     * remove User by username
+     */
+    public void unloadUserByUsername(String username) {
+        redisUtil.delete(username);
+    }
+
 }

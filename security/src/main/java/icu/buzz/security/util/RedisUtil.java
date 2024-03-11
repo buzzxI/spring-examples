@@ -31,4 +31,8 @@ public class RedisUtil {
     public void set(String key, Object value, long timeout) {
         template.opsForValue().set(key, value, timeout, TimeUnit.SECONDS);
     }
+
+    public void delete(String key) {
+        template.delete(key);
+    }
 }
