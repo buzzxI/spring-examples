@@ -53,14 +53,13 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         token = token.replace(SecurityConstant.TOKEN_PREFIX, "");
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
             try {
-                if (!jwtService.tokenExpire(token)) {
-                    String username = jwtService.extractUsername(token);
-                    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                    // current context need an authentication token, just new an instance
-                    // set UserDetails as principal, token as credentials
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-                }
+                if (jwtService.tokenExpire(token)) request.getRequestDispatcher("/error/expired-jwt-token").forward(request, response);
+                String username = jwtService.extractUsername(token);
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                // current context need an authentication token, just new an instance
+                // set UserDetails as principal, token as credentials
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, token, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             } catch (JwtException e) {
                 // dispatch the request, so that global exception handler can handle this exception
                 request.getRequestDispatcher("/error/invalid-jwt-token").forward(request, response);

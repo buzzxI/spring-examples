@@ -73,5 +73,4 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public void unloadUserByUsername(String username) {
         redisUtil.delete(username);
     }
-
 }

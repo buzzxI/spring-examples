@@ -48,6 +48,22 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * handle exception: expired jwt token
+     */
+    @ExceptionHandler(ExpiredJwtTokenException.class)
+    public ResponseEntity<ErrorResponse> handleExpiredToken(ExpiredJwtTokenException e, HttpServletRequest request) {
+        return simpleErrorHandling(e, request.getRequestURI());
+    }
+
+    /**
+     * handle exception: user not available (disabled, locked, expired)
+     */
+    @ExceptionHandler(UserNotAvailableException.class)
+    public ResponseEntity<ErrorResponse> handleUserNotAvailable(UserNotAvailableException e, HttpServletRequest request) {
+        return simpleErrorHandling(e, request.getRequestURI());
+    }
+
+    /**
      * simple error handling
      * construct an error response from exception
      */

@@ -56,16 +56,16 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-   public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-       Claims claims = extractAllClaims(token);
-       return claimsResolver.apply(claims);
-   }
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
 
-   private Claims extractAllClaims(String token) {
-       return Jwts.parser()
-               .verifyWith(jwtConfig.rsaConfig().publicKey())
-               .build()
-               .parseSignedClaims(token)
-               .getPayload();
-   }
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith(jwtConfig.rsaConfig().publicKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
 }

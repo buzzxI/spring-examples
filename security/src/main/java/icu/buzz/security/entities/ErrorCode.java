@@ -11,6 +11,7 @@ public enum ErrorCode {
     MULTIPLE_USER_FOUND(1004, HttpStatus.INTERNAL_SERVER_ERROR, "multiple user found"),
     PASSWORD_MISMATCH(1005, HttpStatus.BAD_REQUEST, "password mismatch"),
     USER_NOT_AVAILABLE(1006, HttpStatus.FORBIDDEN, "user not available"),
+    EXPIRED_JWT_TOKEN(1007, HttpStatus.UNAUTHORIZED, "jwt token expired"),
     ;
 
     private final int code;

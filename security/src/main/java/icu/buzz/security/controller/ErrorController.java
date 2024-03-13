@@ -1,5 +1,6 @@
 package icu.buzz.security.controller;
 
+import icu.buzz.security.exception.ExpiredJwtTokenException;
 import icu.buzz.security.exception.InvalidJwtTokenException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,5 +19,10 @@ public class ErrorController {
     @GetMapping("/invalid-jwt-token")
     public void throwInvalidJwtTokenException() {
         throw new InvalidJwtTokenException(Map.of());
+    }
+
+    @GetMapping("/expired-jwt-token")
+    public void throwExpiredJwtTokenException() {
+        throw new ExpiredJwtTokenException(Map.of());
     }
 }
