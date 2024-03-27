@@ -3,7 +3,7 @@ server:
 
 jwt:
   # god-damn it, spring does not support EL in yml file
-  expire-time: 7200 # 60 * 60 * 2
+  expire-time: 1 # 60 * 60 * 2
   rsa-config:
     private-key: classpath:cert/private_key.pem
     public-key: classpath:cert/public_key.pem

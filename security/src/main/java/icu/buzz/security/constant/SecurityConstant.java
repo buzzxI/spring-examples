@@ -11,8 +11,6 @@ public class SecurityConstant {
             "/auth/sign-up",
     };
 
-    public static final String ERROR_RESOURCE = "/error/**";
-
     public static final String ADMIN_RESOURCE = "/admin/**";
 
     public static final String USER_RESOURCE = "/user/**";

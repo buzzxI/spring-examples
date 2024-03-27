@@ -2,13 +2,17 @@ package icu.buzz.security.handler;
 
 import icu.buzz.security.dto.ErrorResponse;
 import icu.buzz.security.exception.*;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.util.Map;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * handle exception: current username has already in use
@@ -39,21 +43,6 @@ public class GlobalExceptionHandler {
         return simpleErrorHandling(e, request.getRequestURI());
     }
 
-    /**
-     * handle exception: invalid jwt token
-     */
-    @ExceptionHandler(InvalidJwtTokenException.class)
-    public ResponseEntity<ErrorResponse> handleInvalidToken(InvalidJwtTokenException e, HttpServletRequest request) {
-        return simpleErrorHandling(e, request.getRequestURI());
-    }
-
-    /**
-     * handle exception: expired jwt token
-     */
-    @ExceptionHandler(ExpiredJwtTokenException.class)
-    public ResponseEntity<ErrorResponse> handleExpiredToken(ExpiredJwtTokenException e, HttpServletRequest request) {
-        return simpleErrorHandling(e, request.getRequestURI());
-    }
 
     /**
      * handle exception: user not available (disabled, locked, expired)
@@ -61,6 +50,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotAvailableException.class)
     public ResponseEntity<ErrorResponse> handleUserNotAvailable(UserNotAvailableException e, HttpServletRequest request) {
         return simpleErrorHandling(e, request.getRequestURI());
+    }
+
+    /**
+     * handle exception: invalid jwt token
+     */
+    @ExceptionHandler(JwtException.class)
+    public ResponseEntity<ErrorResponse> handleJwtException(JwtException e, HttpServletRequest request) {
+        return simpleErrorHandling(new InvalidJwtTokenException(Map.of("invalid jwt token", e.getMessage())), request.getRequestURI());
     }
 
     /**
