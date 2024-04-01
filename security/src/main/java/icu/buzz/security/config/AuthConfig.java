@@ -1,9 +1,12 @@
 package icu.buzz.security.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationEventPublisher;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DefaultAuthenticationEventPublisher;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,7 +52,14 @@ public class AuthConfig {
 	 * control the way to authenticate the user
 	 */
 	@Bean
-	public AuthenticationManager authenticationManager(DaoAuthenticationProvider daoAuthenticationProvider) {
-		return new ProviderManager(List.of(daoAuthenticationProvider));
+	public AuthenticationManager authenticationManager(DaoAuthenticationProvider daoAuthenticationProvider, AuthenticationEventPublisher authenticationEventPublisher) {
+		ProviderManager authenticationManager = new ProviderManager(List.of(daoAuthenticationProvider));
+		authenticationManager.setAuthenticationEventPublisher(authenticationEventPublisher);
+		return authenticationManager;
+	}
+
+	@Bean
+	public AuthenticationEventPublisher authenticationEventPublisher(ApplicationEventPublisher applicationEventPublisher) {
+		return new DefaultAuthenticationEventPublisher(applicationEventPublisher);
 	}
 }

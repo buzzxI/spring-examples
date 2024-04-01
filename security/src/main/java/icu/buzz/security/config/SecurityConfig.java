@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 // this configuration will enable default SecurityFilterChain
-@EnableWebSecurity
+//@EnableWebSecurity
 @Configuration
 public class SecurityConfig {
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
@@ -55,7 +55,8 @@ public class SecurityConfig {
 						.requestMatchers(SecurityConstant.USER_RESOURCE).hasAnyRole(Role.USER.name(), Role.ADMIN.name())
 						// anonymous users can access `/public/**`
 						.requestMatchers(SecurityConstant.PUBLIC_RESOURCE).permitAll()
-						.anyRequest().authenticated())
+						.anyRequest().authenticated()
+				)
 				// in a jwt based system, csrf protection is not needed -> (two stage token is recommended -> refresh token and in-memory jwt token)
 				.csrf(AbstractHttpConfigurer::disable)
 				// jwt filter must be before UsernamePasswordAuthenticationFilter

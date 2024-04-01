@@ -12,6 +12,9 @@ public enum ErrorCode {
     PASSWORD_MISMATCH(1005, HttpStatus.BAD_REQUEST, "password mismatch"),
     USER_NOT_AVAILABLE(1006, HttpStatus.FORBIDDEN, "user not available"),
     EXPIRED_JWT_TOKEN(1007, HttpStatus.UNAUTHORIZED, "jwt token expired"),
+    SERVER_INTERNAL_ERROR(1008, HttpStatus.INTERNAL_SERVER_ERROR, "server internal error"),
+    USER_LOCKED(1009, HttpStatus.LOCKED, "user locked"),
+    AUTHENTICATION_FAIL(1010, HttpStatus.UNAUTHORIZED, "authentication fail"),
     ;
 
     private final int code;

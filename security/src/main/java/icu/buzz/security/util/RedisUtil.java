@@ -21,6 +21,12 @@ public class RedisUtil {
     }
 
     public Object get(String key) {
+//        Object rst = template.opsForValue().get(key);
+//        if (rst != null) {
+//            // reset the expiration time
+//            template.expire(key, defaultExpire, TimeUnit.SECONDS);
+//        }
+//        return rst;
         return template.opsForValue().get(key);
     }
 

@@ -47,7 +47,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public String authenticate(LoginRequest request) {
-        try {
             Authentication authenticate = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             request.getUsername(),
@@ -57,9 +56,6 @@ public class AuthServiceImpl implements AuthService {
                 throw new UserNotAvailableException(Map.of(ExceptionConstant.USER_NOT_AVAILABLE, request.getUsername()));
             }
             return jwtService.generateToken(authenticate);
-        } catch (BadCredentialsException e) {
-            throw new PasswordMismatchException(Map.of(ExceptionConstant.BAD_CREDENTIALS, request.getUsername()));
-        }
     }
 
     @Override

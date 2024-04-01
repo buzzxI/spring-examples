@@ -5,6 +5,7 @@ import icu.buzz.security.constant.ExceptionConstant;
 import icu.buzz.security.entities.JwtUser;
 import icu.buzz.security.entities.Role;
 import icu.buzz.security.entities.User;
+import icu.buzz.security.entities.UserBo;
 import icu.buzz.security.exception.MultiUserFoundException;
 import icu.buzz.security.exception.UsernameNotFoundException;
 import icu.buzz.security.mapper.UserMapper;
@@ -30,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        User user = (User) redisUtil.get(username);
+        UserBo user = (UserBo) redisUtil.get(username);
         if (user == null) {
             // query by mybatis-plus
             List<User> users = userMapper.selectList(new QueryWrapper<User>().lambda().eq(User::getUsername, username));
@@ -41,7 +42,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 // multiple users found, that should be server internal error
                 throw new MultiUserFoundException(Map.of(ExceptionConstant.MULTIPLE_USER_FOUND, username));
             }
-            user = users.get(0);
+            user = new UserBo((users.get(0)));
             redisUtil.set(user.getUsername(), user);
         }
         return new JwtUser(user);

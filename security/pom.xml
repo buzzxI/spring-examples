@@ -26,6 +26,11 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!--dependency for serialize json for LocalDataTime in jdk 8-->
+		<dependency>
+    		<groupId>com.fasterxml.jackson.datatype</groupId>
+    		<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
 
 		<!--jwt dependency from official site-->
 		<dependency>

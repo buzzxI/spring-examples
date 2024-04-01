@@ -1,37 +1,44 @@
 package icu.buzz.security.entities;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.List;
 
-@Data
-public class JwtUser extends User implements UserDetails {
+@Getter
+@Setter
+public class JwtUser implements UserDetails {
+    private UserBo user;
+    private Collection<GrantedAuthority> authorities;
+    private LocalDateTime unlockedTime;
+
     public JwtUser() {
+        this.unlockedTime = LocalDateTime.now();
     }
 
-    public JwtUser(User user) {
-        super(user.getUid(), user.getUsername(), user.getPassword(), user.getEnabled(), user.getRole());
+
+    public JwtUser(UserBo user) {
+        this.user = user;
+        this.authorities = user.getRole().getAuthority();
+        authorities.add((GrantedAuthority) () -> "ROLE_" + user.getRole().name());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Role role = super.getRole();
-        List<GrantedAuthority> authority = role.getAuthority();
-        authority.add((GrantedAuthority) () -> "ROLE_" + role.name());
-        return authority;
+        return this.authorities;
     }
 
     @Override
     public String getPassword() {
-        return super.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return super.getUsername();
+        return user.getUsername();
     }
 
     @Override
@@ -41,7 +48,7 @@ public class JwtUser extends User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return LocalDateTime.now().isAfter(user.getUnlockedTime());
     }
 
     @Override
@@ -51,6 +58,6 @@ public class JwtUser extends User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return super.getEnabled();
+        return user.getEnabled();
     }
 }
